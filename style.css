@@ -1,0 +1,22 @@
+body{
+    background-color: blueviolet;
+    padding: 20px;
+    margin: 50px;
+    display: flex;
+    gap: 20px;
+}
+.div{
+    background-color: brown;
+    width: 100px;
+    height: 700px;
+    color: blue;
+}
+.divv{
+    background-color: aqua;
+    width: 300px;
+    height: auto;
+    color: beige;
+}
+.p{
+    color: blue;
+}
