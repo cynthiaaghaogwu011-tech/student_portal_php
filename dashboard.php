@@ -22,11 +22,12 @@ require "auth.php";
         <?php if(($_SESSION["role"] ?? "") === "admin"): ?>
             <h1>Admin tools</h1>
             <p><a href="course.php">Manage Courses</a></p>
+            <p><a href="admin_enrollments.php">Enrollments</a></p>
         <?php endif; ?>
     </div>
     <div>
         <h2>Student</h2>
-        <a href="#">My Courses</a>
+        <a href="course.php">My Courses</a>
     </div>
 </body>
 </html>
