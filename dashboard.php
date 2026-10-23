@@ -27,7 +27,7 @@ require "auth.php";
     </div>
     <div>
         <h2>Student</h2>
-        <a href="course.php">My Courses</a>
+        <a href="my_course.php">My Courses</a>
     </div>
 </body>
 </html>

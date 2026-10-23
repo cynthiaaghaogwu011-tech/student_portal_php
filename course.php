@@ -1,6 +1,7 @@
 <?php
 require "admin.php";
 require "db.php";
+require "csrf.php";
 
 $stmt = $pdo->query("SELECT code, title, id FROM courses  ORDER BY code ASC");
 $courses = $stmt->fetchAll();
@@ -35,6 +36,7 @@ $courses = $stmt->fetchAll();
                     <td>
                         <form method="post" action="delete_course.php" onsubmit="return confirm('Delete this course?');">
                             <input type="hidden" name="id" value="<?= (int) $course["id"] ?>">
+                            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES) ?>">
                             <button type="submit">Delete</button>
                         </form>
                     </td>

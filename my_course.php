@@ -36,7 +36,8 @@ $courses = $stmt->fetchAll();
     <?php endif; ?><br>
     <div>
         <a href="dashboard.php">Dashboard</a> 
-        |<a href="course.php">Course</a> |
+        |<a href="my_course.php">Course</a> |
+        <a href="course_available.php">Available Courses</a>|
         <a href="logout.php">Logout</a>
     </div>
 </body>
