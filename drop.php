@@ -1,10 +1,12 @@
 <?php
 require "auth.php";
 require "db.php";
+require "csrf.php";
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     header("Location: my_course.php");
     exit();
 }
+csrf_check();
 $userId = $_SESSION["user_id"];
 $courseId = filter_var($_POST["course_id"] ?? "", FILTER_VALIDATE_INT);
 if ($courseId === false || $courseId < 1) {

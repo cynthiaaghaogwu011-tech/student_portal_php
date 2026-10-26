@@ -1,6 +1,7 @@
 <?php
 require "auth.php";
 require "db.php";
+require "csrf.php";
 
 $stmt = $pdo->prepare(
     "SELECT courses.id, courses.code, courses.title
@@ -29,6 +30,7 @@ $courses = $stmt->fetchAll();
                 <h2><?= htmlspecialchars($course["code"], ENT_QUOTES) ?> - <?= htmlspecialchars($course["title"], ENT_QUOTES) ?></h2>
                 <form action="drop.php" method="POST" onsubmit="return confirm('Drop this course');">
                     <input type="hidden" name="course_id" value="<?= htmlspecialchars((string) $course["id"], ENT_QUOTES) ?>">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES) ?>">
                     <button type="submit">Drop</button>
                 </form>
             </div>

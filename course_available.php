@@ -1,7 +1,7 @@
 <?php
 require "auth.php";
 require "db.php";
-
+require "csrf.php";
 // Get all available courses.
 $stmt = $pdo->prepare("SELECT * FROM courses");
 $stmt->execute();
@@ -40,7 +40,7 @@ $enrolledIds = $stmt->fetchAll(PDO::FETCH_COLUMN);  // FetchAll() retrieves all 
                     <p>Enrolled</p>
                 <?php else: ?>
                     <form action="enroll.php" method="POST">
-                        
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES) ?>">
                         <input type="hidden" name="course_id" value="<?= htmlspecialchars((string) $course["id"], ENT_QUOTES) ?>">
                         <button type="submit">Enroll</button>
                     </form>

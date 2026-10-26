@@ -1,14 +1,15 @@
 <?php
 require "admin.php";
 require "db.php";
-
+require "csrf.php";
 $errors = [];
 $success = "";
 $code = "";
 $title = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $code = trim(strtoupper($_POST["code"] ?? "")); //put all text in caps.
+    csrf_check();
+    $code = strtoupper(trim($_POST["code"] ?? "")); //put all text in caps.
     $title = trim($_POST["title"] ?? "");
 
     if($code === "") {
@@ -65,6 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <label for="title">Title</label>
         <input type="text" name="title" id="title" value="<?= htmlspecialchars($title,ENT_QUOTES) ?>">
         <br>
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES) ?>">
         <button type="submit">Save</button>
     </form>
 </body>

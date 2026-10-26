@@ -1,7 +1,7 @@
 <?php
 require "admin.php";
 require "db.php";
-
+require "csrf.php";
 $id = filter_var($_GET["id"] ?? "", FILTER_VALIDATE_INT);
 if ($id === false || $id < 1) {
     header("Location: course.php");
@@ -22,6 +22,7 @@ $code = $course["code"] ?? "";
 $title = $course["title"] ?? "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    csrf_check();
     $code = trim(strtoupper($_POST["code"] ?? ""));
     $title = trim($_POST["title"] ?? "");
 
@@ -78,6 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <label for="title">Title:</label>
         <input type="text" name="title" id="title" value="<?= htmlspecialchars($title,ENT_QUOTES) ?>">
         <br>
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES) ?>">
         <button type="submit">Save</button>
     </form>
     <p><a href="course.php">Back to Course</a></p>

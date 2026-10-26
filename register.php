@@ -1,12 +1,13 @@
 <?php
 require "db.php";
-
+require "csrf.php";
 $errors = [];
 $success = false;
 $name = "";
 $email = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    csrf_check();
     $name = trim($_POST["fullname"] ?? "");
     $email = trim($_POST["email"] ?? "");
     $password = $_POST["password"] ?? "";
@@ -71,6 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <label for="password">Password:</label>
         <input type="text" id="password" name="password">
         <br>
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES) ?>">
         <button type="submit">Create account</button>
     </form>
     <p>Already have an account? <a href="login.php">Log in</a></p>

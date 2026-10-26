@@ -1,14 +1,14 @@
 <?php
 session_start();
 require "db.php";
-
+require "csrf.php";
 $error = "";
 $email = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    csrf_check();
     $email = trim($_POST["email"] ?? "");
     $password = $_POST["password"] ?? "";
-    
     $stmt = $pdo->prepare("SELECT id, name, password_hash, role FROM users WHERE email = :email");
     $stmt->execute([":email" => $email]);
     $user = $stmt->fetch();
@@ -45,6 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <label for="password">Password:</label>
         <input type="password" id="password" name="password">
         <br>
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES) ?>">
         <button type="submit">log in</button>
     </form>
 </body>
