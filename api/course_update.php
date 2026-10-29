@@ -4,7 +4,7 @@ header("Content-Type: application/json; charset=utf-8");
 if ($_SERVER["REQUEST_METHOD"] !== "PUT") {
     header("Allow: PUT");
     http_response_code(405);
-    echo json_encode(["error"=> "Method not allowed."]);
+    echo json_encode(["error"=> "Method not allowed"]);
     exit();
 }
 $id = filter_var($_GET["id"] ?? null, FILTER_VALIDATE_INT);

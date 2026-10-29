@@ -38,7 +38,7 @@ try{
         http_response_code(409); // Conflict
         echo json_encode(["error" => "Course code already exists"]);
     } else {
-        http_response_code(500); // Conflict
+        http_response_code(500);
         echo json_encode(["error" => "Something went wrong"]);
     }
     exit();
