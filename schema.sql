@@ -1,0 +1,24 @@
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  role VARCHAR(20) NOT NULL DEFAULT 'student'
+);
+
+CREATE TABLE courses (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  code VARCHAR(10) NOT NULL UNIQUE,
+  title VARCHAR(150) NOT NULL,
+  CONSTRAINT chk_code_no_space CHECK (code NOT LIKE '% %')
+);
+
+CREATE TABLE enrollments (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  course_id INT NOT NULL,
+  enrolled_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_user_course (user_id, course_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
+);

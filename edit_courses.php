@@ -20,11 +20,11 @@ if ($course === false) {
 $errors = [];
 $code = $course["code"] ?? "";
 $title = $course["title"] ?? "";
-
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     csrf_check();
-    $code = trim(strtoupper($_POST["code"] ?? ""));
-    $title = trim($_POST["title"] ?? "");
+    $code = strtoupper(trim($_POST["code"] ?? ""));
+    $code = str_replace(" ", "", $code);
+$title = trim($_POST["title"] ?? "");
 
     if ($code === "") {
         $errors[] = "code is required.";

@@ -2,6 +2,8 @@
 require "../db.php";
 
 header("Content-Type: application/json; charset=utf-8");
+require __DIR__ . "/auth_jwt.php";
+require_login();
 if($_SERVER["REQUEST_METHOD"] !== "GET") {
     header("Allow: GET");
     http_response_code(405);

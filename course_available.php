@@ -3,7 +3,7 @@ require "auth.php";
 require "db.php";
 require "csrf.php";
 // Get all available courses.
-$stmt = $pdo->prepare("SELECT * FROM courses");
+$stmt = $pdo->prepare("SELECT id, code, title FROM courses ORDER BY code");
 $stmt->execute();
 $courses = $stmt->fetchAll();
 
@@ -26,7 +26,10 @@ $enrolledIds = $stmt->fetchAll(PDO::FETCH_COLUMN);  // FetchAll() retrieves all 
 <body>
     <h1>Available Courses</h1>
     <div>
-        <a href="course.php">Courses</a> <a href="dashboard.php">Dashboard</a><br>
+        <?php if (($_SESSION["role"] ?? "") === "admin"): ?>
+            <a href="course.php">Courses</a>
+        <?php endif; ?>
+        <a href="dashboard.php">Dashboard</a><br>
         <a href="logout.php">Logout</a>
     </div>
     <?php if (empty($courses)): ?>

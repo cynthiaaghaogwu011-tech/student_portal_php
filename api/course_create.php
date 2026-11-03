@@ -1,6 +1,8 @@
 <?php
 require "../db.php";
 header("Content-Type: application/json; charset=utf-8"); // This tells the client-end its json.
+  require __DIR__ . "/auth_jwt.php";
+  require_admin();
 if ($_SERVER["REQUEST_METHOD"] !== "POST") { //Only POST is allowed.
     header("Allow: POST");
     http_response_code(405);
@@ -16,15 +18,16 @@ if(!is_array($data)) { // if the decoding failed the request is bad.
     echo json_encode(["error" => "Invalid JSON body"]);
     exit();
 }
-$code = trim(strtoupper($data["code"] ?? ""));
-$title = trim($data["title"] ?? "");
+$code = is_string($data["code"] ?? null) ? trim(strtoupper($data["code"])) : "";
+$code = str_replace(" ", "", $code);
+$title = is_string($data["title"] ?? null) ? trim($data["title"]) : "";
 //Validate
 if ($code === "" || $title === "") {
     http_response_code(400);
     echo json_encode(["error" => "Code and title are required."]);
     exit();
 }
-if (!preg_match('/^[A-Z]{2,4}\s?\d{3}$/', $code)) {
+if (!preg_match('/^[A-Z]{2,4}\d{3}$/', $code)) {
     http_response_code(400);
     echo json_encode(["error" => "Code is not valid (example: CSC101)"]);
     exit();

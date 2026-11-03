@@ -15,12 +15,13 @@ $courses = $stmt->fetchAll();
 </head>
 <body>
     <div>
-        <?php if(count($courses) === 0): ?>
-            <p>No courses found yet.</p>
-        <?php else: ?>
         <div>
             <a href="dashboard.php">Dashboard</a>
         </div>
+        <?php if(count($courses) === 0): ?>
+            <p>No courses found yet.</p>
+        <?php else: ?>
+        
         <table border="1" cellpadding="12">
             <tr>
                 <th>Code</th>

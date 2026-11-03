@@ -1,4 +1,10 @@
-schema.sql
-*.sql
 .env
 vendor/
+*.sql
+!schema.sql
+applications.html
+bitnami.css
+dashboard/
+favicon.ico
+img/
+xampp/

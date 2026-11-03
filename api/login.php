@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/../db.php"; // Loads it only the first time and if another file already loaded it, php skips it.
+use Firebase\JWT\JWT; // Tells PHP where to find the library’s JWT class.
 header("Content-Type: application/json; charset=utf-8");
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     header("Allow: POST");
@@ -35,3 +36,11 @@ if ($user === false || !password_verify($password, $user["password_hash"])) {
     echo json_encode(["error" => "Invalid email or password"]);
     exit();
 }
+$payload = [
+    "sub" => $user["id"],
+    "role" => $user["role"],
+    "iat" => time(),
+    "exp" => time() + 3600
+];
+$token = JWT::encode($payload, $_ENV["JWT_SECRET"], "HS256");
+echo json_encode(["token" => $token]);

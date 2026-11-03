@@ -9,8 +9,9 @@ $title = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     csrf_check();
-    $code = strtoupper(trim($_POST["code"] ?? "")); //put all text in caps.
-    $title = trim($_POST["title"] ?? "");
+    $code = strtoupper(trim($_POST["code"] ?? ""));
+$code = str_replace(" ", "", $code);
+$title = trim($_POST["title"] ?? "");
 
     if($code === "") {
         $errors[] = "Code is required.";

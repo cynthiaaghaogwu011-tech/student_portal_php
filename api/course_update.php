@@ -1,6 +1,8 @@
 <?php
 require "../db.php";
 header("Content-Type: application/json; charset=utf-8");
+require __DIR__ . "/auth_jwt.php";
+require_admin();
 if ($_SERVER["REQUEST_METHOD"] !== "PUT") {
     header("Allow: PUT");
     http_response_code(405);
@@ -20,15 +22,15 @@ if (!is_array($data)) {
     echo json_encode(["error" => "Invalid JSON body"]);
     exit();
 }
-$errors = [];
-$code = trim(strtoupper($data["code"] ?? ""));
-$title = trim($data["title"] ?? "");
+$code = strtoupper(trim($_POST["code"] ?? ""));
+$code = str_replace(" ", "", $code);
+$title = is_string($_POST["title"] ?? null) ? trim($_POST["title"]) : "";
 if ($code === "" || $title === "") {
     http_response_code(400);
-    echo json_encode(["error" => "Code or title is required."]);
+    echo json_encode(["error" => "Code and title are required."]);
     exit();
 }
-if (!preg_match('/^[A-Z]{2,4}\s?\d{3}$/', $code)) {
+if (!preg_match('/^[A-Z]{2,4}\d{3}$/', $code)) {
     http_response_code(400);
     echo json_encode(["error" => "Code is not valid (example: CSC101)"]);
     exit();
@@ -41,8 +43,7 @@ if (!$course) {
     echo json_encode(["error" => "Course not found."]);
     exit();
 }
-if (count($errors) === 0) {
-    try{
+try{
         $stmt = $pdo->prepare("UPDATE courses SET code = :code, title = :title WHERE id = :id");
         $stmt->execute([":code" => $code, ":title" => $title, ":id" => $id]);
     } catch (PDOException $e) {
@@ -54,8 +55,8 @@ if (count($errors) === 0) {
             echo json_encode(["error"=> "Something went wrong."]);
         }
         exit();
-    }
 }
+
 http_response_code(200);
 echo json_encode(["course" => [
     "id" => $id,"code" => $code, "title" => $title

@@ -1,6 +1,8 @@
 <?php
 require "../db.php";
 header("Content-Type: application/json; charset=utf-8");
+require __DIR__ . "/auth_jwt.php";
+require_admin();
 if ($_SERVER["REQUEST_METHOD"] !== "DELETE") {
     header("Allow: DELETE");
     http_response_code(405);

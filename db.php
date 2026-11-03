@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv\Dotenv::createImmutable('C:/xampp');
 $dotenv->load(); // Reads the env file.
 $dotenv->required(['DB_HOST', 'DB_NAME', 'DB_USER', 'JWT_SECRET'])->notEmpty();
 
