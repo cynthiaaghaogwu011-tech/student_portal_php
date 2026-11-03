@@ -22,12 +22,17 @@ if (!is_array($data)) {
     echo json_encode(["error" => "Invalid JSON body"]);
     exit();
 }
-$code = strtoupper(trim($_POST["code"] ?? ""));
+$code = is_string($data["code"] ?? null) ? strtoupper(trim($data["code"])) : "";
 $code = str_replace(" ", "", $code);
-$title = is_string($_POST["title"] ?? null) ? trim($_POST["title"]) : "";
+$title = is_string($data["title"] ?? null) ? trim($data["title"]) : "";
 if ($code === "" || $title === "") {
     http_response_code(400);
     echo json_encode(["error" => "Code and title are required."]);
+    exit();
+}
+if (strlen($title) > 150) {
+    http_response_code(400);
+    echo json_encode(["error" => "Title must be 150 characters or fewer."]);
     exit();
 }
 if (!preg_match('/^[A-Z]{2,4}\d{3}$/', $code)) {
