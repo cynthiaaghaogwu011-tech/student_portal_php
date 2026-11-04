@@ -6,6 +6,75 @@
     <title>Document</title>
 </head>
 <body>
+    <div>
+        <p id="greeting"></p>
+        <h2>Courses</h2>
+        <ul id="courseList"></ul>
+    </div>
+    <form id="Loginform">
+        <label>Email:</label>
+        <input id="email" type="email" name="email" required>
+        <br>
+        <label>password:</label>
+        <input id="password" type="password" name="password" required>
+        <button type="submit">Login</button>
+    </form>
+    <br>
+    <button id="logoutBtn" style="display: none;">Logout</button>
+    <script>
+    let token = null;
+    document.getElementById('Loginform').addEventListener('submit', async function (event) {
+        event.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const response = await fetch('/api/login.php', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: email, password: password })
+        });
+        const data = await response.json();
+        console.log(response.status, data);
+        if (response.ok) {
+            token = data.token;
+            document.getElementById('greeting').textContent = `Logged in as ${email}`;
+            document.getElementById('Loginform').style.display = 'none';
+            document.getElementById('logoutBtn').style.display = "";
+            loadCourses();
+        } else {
+            document.getElementById('greeting').textContent = data.error;
+        }
+    });
     
+    async function loadCourses() {
+    const list = document.getElementById('courseList');
+    list.textContent = "";
+    try {
+        const response = await fetch('/api/courses.php', {
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+        const data = await response.json();
+        if (!response.ok) {
+            list.textContent = data.error;
+            return;
+        }
+        data.courses.forEach(function (course) {
+            const item = document.createElement('li');
+            item.textContent = `${course.code} - ${course.title}`;
+            list.appendChild(item);
+        });
+    } catch (error) {
+        list.textContent = "Could not reach the server.";
+    }
+}
+loadCourses();
+document.getElementById('logoutBtn').addEventListener('click', function () {
+    token = null;
+    document.getElementById('courseList').textContent = "";
+    document.getElementById('greeting').textContent = "";
+    document.getElementById('Loginform').reset();
+    document.getElementById('Loginform').style.display = "";
+    document.getElementById('logoutBtn').style.display = "none";
+});
+</script>
 </body>
 </html>
