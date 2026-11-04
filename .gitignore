@@ -7,4 +7,5 @@ bitnami.css
 dashboard/
 favicon.ico
 img/
-xampp/index.php
+xampp/
+/index.php
